@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.RegisteredMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Registered">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="departments_id" jdbcType="VARCHAR" property="departmentsId" />
+    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_idcard" jdbcType="VARCHAR" property="patientIdcard" />
+    <result column="patient_sex" jdbcType="VARCHAR" property="patientSex" />
+    <result column="patient_tel" jdbcType="VARCHAR" property="patientTel" />
+    <result column="registered_content" jdbcType="VARCHAR" property="registeredContent" />
+    <result column="registered_date" jdbcType="VARCHAR" property="registeredDate" />
+    <result column="registered_money" jdbcType="DOUBLE" property="registeredMoney" />
+    <result column="registered_state" jdbcType="VARCHAR" property="registeredState" />
+    <result column="project_result" jdbcType="VARCHAR" property="projectResult" />
+    <association  property="departments" javaType="com.yznu.clinic.beans.Departments"
+                  column="departments_id" select="getDepartmentName"/>
+  </resultMap>
+
+  <resultMap id="DepartmentsResultMap" type="com.yznu.clinic.beans.Departments">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="departments_content" jdbcType="VARCHAR" property="departmentsContent" />
+    <result column="departments_name" jdbcType="VARCHAR" property="departmentsName" />
+  </resultMap>
+
+  <select id="getDepartmentName" parameterType="Integer"
+          resultMap="DepartmentsResultMap">
+        select * from departments where id = #{id}
+    </select>
+
+
+  <insert id="addRegistered" parameterType="com.yznu.clinic.beans.Registered">
+      <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+          <!-- SELECT LAST_INSERT_ID()：得到刚insert到数据表中的记录的主键值，只适用于自增主键 -->
+          SELECT LAST_INSERT_ID() AS id
+      </selectKey>
+    insert into registered
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if><if test="departmentsId != null">
+            departments_id,
+      </if>
+      <if test="patientAge != null">
+        patient_age,
+      </if>
+      <if test="patientName != null">
+        patient_name,
+      </if>
+      <if test="patientIdcard != null">
+        patient_idcard,
+      </if>
+      <if test="patientSex != null">
+        patient_sex,
+      </if>
+      <if test="patientTel != null">
+        patient_tel,
+      </if>
+      <if test="registeredContent != null">
+        registered_content,
+      </if>
+      <if test="registeredDate != null">
+        registered_date,
+      </if>
+      <if test="registeredMoney != null">
+        registered_money,
+      </if>
+      <if test="registeredState != null">
+        registered_state,
+      </if>
+      <if test="projectResult != null">
+        project_result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="departmentsId != null">
+        #{departmentsId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientAge != null">
+        #{patientAge,jdbcType=INTEGER},
+      </if>
+      <if test="patientName != null">
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientIdcard != null">
+        #{patientIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientTel != null">
+        #{patientTel,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredContent != null">
+        #{registeredContent,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredDate != null">
+        #{registeredDate,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredMoney != null">
+        #{registeredMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="registeredState != null">
+        #{registeredState,jdbcType=VARCHAR},
+      </if>
+      <if test="projectResult != null">
+        #{projectResult,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateRegistered" parameterType="com.yznu.clinic.beans.Registered">
+    update registered
+    <set>
+      <if test="departmentsId != null">
+        departments_id = #{departmentsId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientAge != null">
+        patient_age = #{patientAge,jdbcType=INTEGER},
+      </if>
+      <if test="patientName != null">
+        patient_name = #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientIdcard != null">
+        patient_idcard = #{patientIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        patient_sex = #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientTel != null">
+        patient_tel = #{patientTel,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredContent != null">
+        registered_content = #{registeredContent,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredDate != null">
+        registered_date = #{registeredDate,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredMoney != null">
+        registered_money = #{registeredMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="registeredState != null">
+        registered_state = #{registeredState,jdbcType=VARCHAR},
+      </if>
+      <if test="projectResult != null">
+        project_result = #{projectResult,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!-- 分页查询 -->
+  <select id="queryregisteredPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+   select * from (select registered.* ,departments.departments_name from registered left join departments on departments_id = departments.id  where registered_state not in(0)
+ <if test="param.textarea!=null and param.textarea!=''">
+   and departments_id =#{param.textarea}
+ </if>
+<if test="param.data!=null and param.data!=''">
+  and registered_date =#{param.data}
+</if>
+<if test="param.states!=null and param.states!=''">
+  and registered_state = #{param.states}
+</if>
+  limit ${pageNumber},${pageSize}) as a
+    order by a.${param.sort} ${param.sortOrder}
+</select>
+
+  <!-- 总条数查询 -->
+  <select id="getAllregisteredCount" resultType="int">
+		select count(*) from registered where  registered_state not in(0)
+    <if test="param.textarea!=null and param.textarea!=''">
+    and departments_id =#{param.textarea}
+  </if>
+    <if test="param.data!=null and param.data!=''">
+      and registered_date =#{param.data}
+    </if>
+    <if test="param.states!=null and param.states!=''">
+      and registered_state = #{param.states}
+    </if>
+
+</select>
+
+
+
+  <select id="queryregisteredById" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from registered where id=#{id}
+  </select>
+
+<select id="queryregisteredByIdard" resultMap="BaseResultMap" parameterType="java.util.Map">
+   select * from registered where patient_idcard=#{idcard}
+</select>
+
+  <!-- 删除-->
+  <delete id="deleteregistered" parameterType="java.lang.Integer">
+    delete from registered
+    where id = #{id}
+  </delete>
+
+
+
+  <select id="tuxing" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select count(*) as id
+    <choose>
+      <when test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+        , DATE_FORMAT(registered_date, '%Y')  as registered_date
+      </when>
+      <otherwise>
+        , DATE_FORMAT(registered_date, '%Y-%m')  as registered_date
+      </otherwise>
+    </choose>
+    from registered  where  1=1
+    <if test="registeredDate != null and registeredDate!=''">
+       and  registered_date LIKE "%"#{registeredDate}"%"
+     </if>
+    <if test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+      and  registered_date BETWEEN #{startDate} and #{endDate}
+    </if>
+    <choose>
+      <when test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+        group by DATE_FORMAT(registered_date, '%Y')
+      </when>
+      <otherwise>
+        group by DATE_FORMAT(registered_date, '%Y-%m')
+      </otherwise>
+    </choose>
+  </select>
+</mapper>

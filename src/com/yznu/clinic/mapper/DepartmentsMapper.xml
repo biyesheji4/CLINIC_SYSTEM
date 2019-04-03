@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.DepartmentsMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Departments">
+    <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="departments_name" jdbcType="VARCHAR" property="departmentsName" />
+      <result column="departments_content" jdbcType="VARCHAR" property="departmentsContent" />
+      <result column="departments_date" jdbcType="VARCHAR" property="departmentsDate" />
+      <result column="departments_remarks" jdbcType="VARCHAR" property="departmentsRemarks" />
+      <result column="departments_state" jdbcType="VARCHAR" property="departmentsState" />
+      <result column="departments_address" jdbcType="VARCHAR" property="departmentsAddress" />
+      <result column="departments_num" jdbcType="INTEGER" property="departmentsNum" />
+  </resultMap>
+
+
+<select id="queryAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from  departments where departments_state=1
+</select>
+
+  <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from departments where id=#{id}
+  </select>
+
+  <!-- 分页查询 -->
+<select id="querydepartmentsPage" resultMap="BaseResultMap" parameterType="com.yznu.clinic.util.Page">
+ select * from departments order by ${param.sort} ${param.sortOrder} limit ${pageNumber},${pageSize}
+
+</select>
+
+  <select id="getdepartmentID" resultMap="BaseResultMap" resultType="com.yznu.clinic.util.Page">
+		 select * from departments where 1=1
+		  <if  test="param.departmentsName!=null and param.departmentsName!=''">
+            and departments_name like "%"#{param.departmentsName}"%"
+          </if>
+		  order by ${param.sort} ${param.sortOrder} limit ${pageNumber},${pageSize}
+</select>
+
+  <!-- 总条数查询 -->
+  <select id="getAlldepartementCount" resultType="int">
+		select count(*) from departments where 1=1
+      <if  test="param.departmentsName!=null and param.departmentsName!=''">
+      and  departments_name like "%"#{param.departmentsName}"%"
+    </if>
+</select>
+
+
+
+    <sql id="Base_Column_List">
+        id, departments_name, departments_content, departments_date, departments_remarks,
+        departments_state, departments_address, departments_num
+    </sql>
+    <select id="querysomedata" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from departments where (departments_name like #{searchindex}
+                                         or departments_num like #{searchindex}
+                                         or departments_content like #{searchindex}
+                                         or departments_remarks like #{searchindex} )
+                                        and departments_state=#{delflag}
+                                        and str_to_date(departments_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                                        str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+        ORDER BY str_to_date(departments_date, '%Y-%m-%d %H:%i:%S') limit #{currIndex} , #{pageSize}
+    </select>
+    <select id="queryProjectsBySql" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from departments where departments_state= #{state} limit #{currIndex} , #{pageSize}
+    </select>
+    <select id="queryTotalsize" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from departments where (departments_name like #{searchindex}
+                                                 or departments_num like #{searchindex}
+                                                 or departments_content like #{searchindex}
+                                                 or departments_remarks like #{searchindex} )
+                                                and departments_state=#{delflag}
+                                                and str_to_date(departments_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                                                str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+        ORDER BY str_to_date(departments_date, '%Y-%m-%d %H:%i:%S')
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from departments
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from departments
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from departments
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.yznu.clinic.beans.Departments">
+        insert into departments (id, departments_name, departments_content,
+                                 departments_date, departments_remarks, departments_state,
+                                 departments_address, departments_num)
+        values (#{id,jdbcType=INTEGER}, #{departmentsName,jdbcType=VARCHAR}, #{departmentsContent,jdbcType=VARCHAR},
+                #{departmentsDate,jdbcType=VARCHAR}, #{departmentsRemarks,jdbcType=VARCHAR}, #{departmentsState,jdbcType=VARCHAR},
+                #{departmentsAddress,jdbcType=VARCHAR}, #{departmentsNum,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yznu.clinic.beans.Departments">
+        insert into departments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="departmentsName != null">
+                departments_name,
+            </if>
+            <if test="departmentsContent != null">
+                departments_content,
+            </if>
+            <if test="departmentsDate != null">
+                departments_date,
+            </if>
+            <if test="departmentsRemarks != null">
+                departments_remarks,
+            </if>
+            <if test="departmentsState != null">
+                departments_state,
+            </if>
+            <if test="departmentsAddress != null">
+                departments_address,
+            </if>
+            <if test="departmentsNum != null">
+                departments_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="departmentsName != null">
+                #{departmentsName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsContent != null">
+                #{departmentsContent,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsDate != null">
+                #{departmentsDate,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsRemarks != null">
+                #{departmentsRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsState != null">
+                #{departmentsState,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsAddress != null">
+                #{departmentsAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsNum != null">
+                #{departmentsNum,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yznu.clinic.beans.Departments">
+        update departments
+        <set>
+            <if test="departmentsName != null">
+                departments_name = #{departmentsName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsContent != null">
+                departments_content = #{departmentsContent,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsDate != null">
+                departments_date = #{departmentsDate,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsRemarks != null">
+                departments_remarks = #{departmentsRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsState != null">
+                departments_state = #{departmentsState,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsAddress != null">
+                departments_address = #{departmentsAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsNum != null">
+                departments_num = #{departmentsNum,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yznu.clinic.beans.Departments">
+        update departments
+        set departments_name = #{departmentsName,jdbcType=VARCHAR},
+            departments_content = #{departmentsContent,jdbcType=VARCHAR},
+            departments_date = #{departmentsDate,jdbcType=VARCHAR},
+            departments_remarks = #{departmentsRemarks,jdbcType=VARCHAR},
+            departments_state = #{departmentsState,jdbcType=VARCHAR},
+            departments_address = #{departmentsAddress,jdbcType=VARCHAR},
+            departments_num = #{departmentsNum,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

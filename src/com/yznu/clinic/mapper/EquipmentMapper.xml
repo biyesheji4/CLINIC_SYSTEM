@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.EquipmentMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Equipment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
+    <result column="equipment_content" jdbcType="VARCHAR" property="equipmentContent" />
+    <result column="equipment_date" jdbcType="VARCHAR" property="equipmentDate" />
+    <result column="equipment_remarks" jdbcType="VARCHAR" property="equipmentRemarks" />
+    <result column="equipment_state" jdbcType="VARCHAR" property="equipmentState" />
+    <result column="equipment_address" jdbcType="VARCHAR" property="equipmentAddress" />
+    <result column="equipment_num" jdbcType="INTEGER" property="equipmentNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, equipment_name, equipment_content, equipment_date, equipment_remarks, equipment_state, 
+    equipment_address, equipment_num
+  </sql>
+  <select id="querysomedata" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from equipment where (equipment_name like #{searchindex} 
+        or equipment_num like #{searchindex} 
+        or equipment_content like #{searchindex} 
+        or equipment_remarks like #{searchindex} )
+        and equipment_state=#{delflag}
+        and str_to_date(equipment_date, '%Y-%m-%d %H:%i:%S') BETWEEN 
+        str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+		ORDER BY str_to_date(equipment_date, '%Y-%m-%d %H:%i:%S') limit #{currIndex} , #{pageSize}
+  </select>
+  <select id="queryProjectsBySql" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from equipment where equipment_state= #{state} limit #{currIndex} , #{pageSize}
+  </select>
+  <select id="queryTotalsize" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from equipment where (equipment_name like #{searchindex} 
+        or equipment_num like #{searchindex} 
+        or equipment_content like #{searchindex} 
+        or equipment_remarks like #{searchindex} )
+        and equipment_state=#{delflag}
+        and str_to_date(equipment_date, '%Y-%m-%d %H:%i:%S') BETWEEN 
+        str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+		ORDER BY str_to_date(equipment_date, '%Y-%m-%d %H:%i:%S')
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from equipment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from equipment
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from equipment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yznu.clinic.beans.Equipment">
+    insert into equipment (id, equipment_name, equipment_content, 
+      equipment_date, equipment_remarks, equipment_state, 
+      equipment_address, equipment_num)
+    values (#{id,jdbcType=INTEGER}, #{equipmentName,jdbcType=VARCHAR}, #{equipmentContent,jdbcType=VARCHAR}, 
+      #{equipmentDate,jdbcType=VARCHAR}, #{equipmentRemarks,jdbcType=VARCHAR}, #{equipmentState,jdbcType=VARCHAR}, 
+      #{equipmentAddress,jdbcType=VARCHAR}, #{equipmentNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yznu.clinic.beans.Equipment">
+    insert into equipment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="equipmentName != null">
+        equipment_name,
+      </if>
+      <if test="equipmentContent != null">
+        equipment_content,
+      </if>
+      <if test="equipmentDate != null">
+        equipment_date,
+      </if>
+      <if test="equipmentRemarks != null">
+        equipment_remarks,
+      </if>
+      <if test="equipmentState != null">
+        equipment_state,
+      </if>
+      <if test="equipmentAddress != null">
+        equipment_address,
+      </if>
+      <if test="equipmentNum != null">
+        equipment_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentName != null">
+        #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentContent != null">
+        #{equipmentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentDate != null">
+        #{equipmentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentRemarks != null">
+        #{equipmentRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentState != null">
+        #{equipmentState,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentAddress != null">
+        #{equipmentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentNum != null">
+        #{equipmentNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yznu.clinic.beans.Equipment">
+    update equipment
+    <set>
+      <if test="equipmentName != null">
+        equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentContent != null">
+        equipment_content = #{equipmentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentDate != null">
+        equipment_date = #{equipmentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentRemarks != null">
+        equipment_remarks = #{equipmentRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentState != null">
+        equipment_state = #{equipmentState,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentAddress != null">
+        equipment_address = #{equipmentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentNum != null">
+        equipment_num = #{equipmentNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yznu.clinic.beans.Equipment">
+    update equipment
+    set equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      equipment_content = #{equipmentContent,jdbcType=VARCHAR},
+      equipment_date = #{equipmentDate,jdbcType=VARCHAR},
+      equipment_remarks = #{equipmentRemarks,jdbcType=VARCHAR},
+      equipment_state = #{equipmentState,jdbcType=VARCHAR},
+      equipment_address = #{equipmentAddress,jdbcType=VARCHAR},
+      equipment_num = #{equipmentNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

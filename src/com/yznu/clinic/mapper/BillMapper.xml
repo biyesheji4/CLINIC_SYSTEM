@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.BillMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Bill">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
+    <result column="bill_date" jdbcType="VARCHAR" property="billDate" />
+    <result column="bill_state" jdbcType="VARCHAR" property="billState" />
+    <result column="bill_num" jdbcType="INTEGER" property="billNum" />
+    <result column="bill_type" jdbcType="VARCHAR" property="billType" />
+    <result column="bill_option" jdbcType="VARCHAR" property="billOption" />
+    <result column="bill_mon" jdbcType="DOUBLE" property="billMon" />
+    <result column="bill_remarks" jdbcType="VARCHAR" property="billRemarks" />
+    <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
+    <result column="employee_num" jdbcType="INTEGER" property="employeeNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bill_name, bill_date, bill_state, bill_num, bill_type, bill_option, bill_mon,
+    bill_remarks, employee_id, employee_num
+  </sql>
+  <select id="querysomedata" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from bill where (bill_name like #{searchindex}
+                              or bill_type like #{searchindex}
+                              or bill_option like #{searchindex}
+                              or bill_remarks like #{searchindex} )
+                             and bill_state in (#{delflag1},#{delflag2})
+                             and str_to_date(bill_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                             str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+    ORDER BY str_to_date(bill_date, '%Y-%m-%d %H:%i:%S') limit #{currIndex} , #{pageSize}
+  </select>
+  <select id="queryTotalsize" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(id) from bill where (bill_name like #{searchindex}
+                                      or bill_type like #{searchindex}
+                                      or bill_option like #{searchindex}
+                                      or bill_remarks like #{searchindex})
+                                     and bill_state in (#{delflag1},#{delflag2})
+                                     and str_to_date(bill_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                                     str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+    ORDER BY str_to_date(bill_date, '%Y-%m-%d %H:%i:%S')
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAllBill" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bill
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yznu.clinic.beans.Bill">
+    insert into bill (id, bill_name, bill_date,
+                      bill_state, bill_num, bill_type,
+                      bill_option, bill_mon, bill_remarks,
+                      employee_id, employee_num)
+    values (#{id,jdbcType=INTEGER}, #{billName,jdbcType=VARCHAR}, #{billDate,jdbcType=VARCHAR},
+      #{billState,jdbcType=VARCHAR}, #{billNum,jdbcType=INTEGER}, #{billType,jdbcType=VARCHAR},
+      #{billOption,jdbcType=VARCHAR}, #{billMon,jdbcType=DOUBLE}, #{billRemarks,jdbcType=VARCHAR},
+      #{employeeId,jdbcType=INTEGER}, #{employeeNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yznu.clinic.beans.Bill">
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="billName != null">
+        bill_name,
+      </if>
+      <if test="billDate != null">
+        bill_date,
+      </if>
+      <if test="billState != null">
+        bill_state,
+      </if>
+      <if test="billNum != null">
+        bill_num,
+      </if>
+      <if test="billType != null">
+        bill_type,
+      </if>
+      <if test="billOption != null">
+        bill_option,
+      </if>
+      <if test="billMon != null">
+        bill_mon,
+      </if>
+      <if test="billRemarks != null">
+        bill_remarks,
+      </if>
+      <if test="employeeId != null">
+        employee_id,
+      </if>
+      <if test="employeeNum != null">
+        employee_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billName != null">
+        #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billDate != null">
+        #{billDate,jdbcType=VARCHAR},
+      </if>
+      <if test="billState != null">
+        #{billState,jdbcType=VARCHAR},
+      </if>
+      <if test="billNum != null">
+        #{billNum,jdbcType=INTEGER},
+      </if>
+      <if test="billType != null">
+        #{billType,jdbcType=VARCHAR},
+      </if>
+      <if test="billOption != null">
+        #{billOption,jdbcType=VARCHAR},
+      </if>
+      <if test="billMon != null">
+        #{billMon,jdbcType=DOUBLE},
+      </if>
+      <if test="billRemarks != null">
+        #{billRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeNum != null">
+        #{employeeNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yznu.clinic.beans.Bill">
+    update bill
+    <set>
+      <if test="billName != null">
+        bill_name = #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billDate != null">
+        bill_date = #{billDate,jdbcType=VARCHAR},
+      </if>
+      <if test="billState != null">
+        bill_state = #{billState,jdbcType=VARCHAR},
+      </if>
+      <if test="billNum != null">
+        bill_num = #{billNum,jdbcType=INTEGER},
+      </if>
+      <if test="billType != null">
+        bill_type = #{billType,jdbcType=VARCHAR},
+      </if>
+      <if test="billOption != null">
+        bill_option = #{billOption,jdbcType=VARCHAR},
+      </if>
+      <if test="billMon != null">
+        bill_mon = #{billMon,jdbcType=DOUBLE},
+      </if>
+      <if test="billRemarks != null">
+        bill_remarks = #{billRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null">
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeNum != null">
+        employee_num = #{employeeNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yznu.clinic.beans.Bill">
+    update bill
+    set bill_name = #{billName,jdbcType=VARCHAR},
+      bill_date = #{billDate,jdbcType=VARCHAR},
+      bill_state = #{billState,jdbcType=VARCHAR},
+      bill_num = #{billNum,jdbcType=INTEGER},
+      bill_type = #{billType,jdbcType=VARCHAR},
+      bill_option = #{billOption,jdbcType=VARCHAR},
+      bill_mon = #{billMon,jdbcType=DOUBLE},
+      bill_remarks = #{billRemarks,jdbcType=VARCHAR},
+      employee_id = #{employeeId,jdbcType=INTEGER},
+      employee_num = #{employeeNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="insertBill" parameterType="com.yznu.clinic.beans.Bill">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      <!-- SELECT LAST_INSERT_ID()：得到刚insert到数据表中的记录的主键值，只适用于自增主键 -->
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="billName != null">
+        bill_name,
+      </if>
+      <if test="billDate != null">
+        bill_date,
+      </if>
+      <if test="billState != null">
+        bill_state,
+      </if>
+      <if test="billNum != null">
+        bill_num,
+      </if>
+      <if test="billType != null">
+        bill_type,
+      </if>
+      <if test="billOption != null">
+        bill_option,
+      </if>
+      <if test="billMon != null">
+        bill_mon,
+      </if>
+      <if test="billRemarks != null">
+        bill_remarks,
+      </if>
+      <if test="employeeId != null">
+        employee_id,
+      </if>
+      <if test="employeeNum != null">
+        employee_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billName != null">
+        #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="billDate != null">
+        #{billDate,jdbcType=VARCHAR},
+      </if>
+      <if test="billState != null">
+        #{billState,jdbcType=VARCHAR},
+      </if>
+      <if test="billNum != null">
+        #{billNum,jdbcType=INTEGER},
+      </if>
+      <if test="billType != null">
+        #{billType,jdbcType=VARCHAR},
+      </if>
+      <if test="billOption != null">
+        #{billOption,jdbcType=VARCHAR},
+      </if>
+      <if test="billMon != null">
+        #{billMon,jdbcType=DOUBLE},
+      </if>
+      <if test="billRemarks != null">
+        #{billRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeNum != null">
+        #{employeeNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+
+<!--统计收入、支出，显示在统计页面-->
+  <select id="statistics" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT bill_state,SUM(bill_mon) as bill_mon
+    <choose>
+      <when test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+        , DATE_FORMAT(bill_date, '%Y')  as bill_date
+      </when>
+      <otherwise>
+        , DATE_FORMAT(bill_date, '%Y-%m')  as bill_date
+      </otherwise>
+    </choose>
+    from bill WHERE 1=1
+    <if test="registeredDate != null and registeredDate!=''">
+      and  bill_date LIKE "%"#{registeredDate}"%"
+    </if>
+    <if test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+      and  bill_date BETWEEN #{startDate} and #{endDate}
+    </if>
+    <choose>
+      <when test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+        group by DATE_FORMAT(bill_date, '%Y'),bill_state
+      </when>
+      <otherwise>
+        group by DATE_FORMAT(bill_date, '%Y-%m'),bill_state
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="querybillbyall" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from bill where (bill_name like #{searchindex}
+                              or bill_type like #{searchindex}
+                              or bill_option like #{searchindex}
+                              or bill_remarks like #{searchindex} )
+
+                             and str_to_date(bill_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                             str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+    ORDER BY str_to_date(bill_date, '%Y-%m-%d %H:%i:%S')
+  </select>
+</mapper>

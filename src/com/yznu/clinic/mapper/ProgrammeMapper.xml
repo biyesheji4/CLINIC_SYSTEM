@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.ProgrammeMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Programme">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="programme_date" jdbcType="VARCHAR" property="programmeDate" />
+    <result column="programme_medicine" jdbcType="VARCHAR" property="programmeMedicine" />
+    <result column="programme_projects" jdbcType="VARCHAR" property="programmeProjects" />
+    <result column="programme_mony" jdbcType="DOUBLE" property="programmeMony" />
+    <result column="programme_state" jdbcType="DOUBLE" property="programmeState" />
+    <result column="medicine_id" jdbcType="DOUBLE" property="medicineId" />
+    <result column="medicine_num" jdbcType="DOUBLE" property="medicineNum" />
+    <result column="patient_id" jdbcType="INTEGER" property="patientId" />
+    <association  property="registered" javaType="com.yznu.clinic.beans.Registered"
+                  column="patient_id" select="getRegistered"/>
+  </resultMap>
+
+<resultMap id="RegisteredMap" type="com.yznu.clinic.beans.Registered">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="departments_id" jdbcType="VARCHAR" property="departmentsId" />
+  <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
+  <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+  <result column="patient_idcard" jdbcType="VARCHAR" property="patientIdcard" />
+  <result column="patient_sex" jdbcType="VARCHAR" property="patientSex" />
+  <result column="patient_tel" jdbcType="VARCHAR" property="patientTel" />
+  <result column="registered_content" jdbcType="VARCHAR" property="registeredContent" />
+  <result column="registered_date" jdbcType="VARCHAR" property="registeredDate" />
+  <result column="registered_money" jdbcType="DOUBLE" property="registeredMoney" />
+  <result column="registered_state" jdbcType="VARCHAR" property="registeredState" />
+  <association  property="departments" javaType="com.yznu.clinic.beans.Departments"
+                column="departments_id" select="getDepartmentName"/>
+</resultMap>
+
+  <resultMap id="DepartmentsResultMap" type="com.yznu.clinic.beans.Departments">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="departments_content" jdbcType="VARCHAR" property="departmentsContent" />
+    <result column="departments_name" jdbcType="VARCHAR" property="departmentsName" />
+  </resultMap>
+
+  <select id="getDepartmentName" parameterType="Integer"
+          resultMap="DepartmentsResultMap">
+    select * from departments where id = #{id}
+  </select>
+  <select id="getRegistered" parameterType="Integer" resultMap="RegisteredMap">
+    select * from registered where id = #{id}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.yznu.clinic.beans.Programme">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      <!-- SELECT LAST_INSERT_ID()：得到刚insert到数据表中的记录的主键值，只适用于自增主键 -->
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into programme
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="programmeDate != null">
+        programme_date,
+      </if>
+      <if test="programmeMedicine != null">
+        programme_medicine,
+      </if>
+      <if test="programmeProjects != null">
+        programme_projects,
+      </if>
+      <if test="programmeMony != null">
+        programme_mony,
+      </if>
+      <if test="programmeState != null">
+        programme_state,
+      </if>
+      <if test="medicineId != null">
+        medicine_id,
+      </if>
+      <if test="medicineNum != null">
+        medicine_num,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="programmeDate != null">
+        #{programmeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeMedicine != null">
+        #{programmeMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeProjects != null">
+        #{programmeProjects,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeMony != null">
+        #{programmeMony,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeState != null">
+        #{programmeState,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineId != null">
+        #{medicineId,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineNum != null">
+        #{medicineNum,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateProgramme" parameterType="com.yznu.clinic.beans.Programme">
+    update programme
+    <set>
+      <if test="programmeDate != null">
+        programme_date = #{programmeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeMedicine != null">
+        programme_medicine = #{programmeMedicine,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeProjects != null">
+        programme_projects = #{programmeProjects,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeMony != null">
+        programme_mony =  #{programmeMony,jdbcType=VARCHAR},
+      </if>
+      <if test="programmeState != null">
+        programme_state = #{programmeState,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineId != null">
+        medicine_id = #{medicineId,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineNum != null">
+        medicine_num = #{medicineNum,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+<!--收费员、药品管理员查询诊疗药品-->
+  <select id="queryProgrammePage" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from (select programme.*  from programme left join registered on patient_id = registered.id
+    <choose>
+      <when test="param.programmetype == 'programme_medicine'">
+        where programme_medicine is not null
+      </when>
+      <otherwise>
+        where programme_projects is not null
+      </otherwise>
+    </choose>
+    <if test="param.data!=null and param.data!=''">
+      and programme_date =#{param.data}
+    </if>
+    <if test="param.state!=null and param.state!=''">
+      and programme_state =#{param.state}
+    </if>
+    limit ${pageNumber},${pageSize}) as a
+    order by a.${param.sort} ${param.sortOrder}
+  </select>
+
+  <!-- 总条数查询 -->
+  <select id="getAllProgrammeCount" resultType="int">
+    select COUNT(*) from programme
+    <choose>
+      <when test="param.programmetype == 'programme_medicine'">
+        where programme_medicine is not null
+      </when>
+      <otherwise>
+        where programme_projects is not null
+      </otherwise>
+    </choose>
+    <if test="param.data!=null and param.data!=''">
+      and programme_date =#{param.data}
+    </if>
+    <if test="param.state!=null and param.state!=''">
+      and programme_state =#{param.state}
+    </if>
+  </select>
+
+    <select id="queryprogrammeById" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select * from programme where id=#{id}
+    </select>
+
+
+  <!-- 删除-->
+  <delete id="deleteprogramme" parameterType="java.lang.Integer">
+    delete from programme
+    where id = #{id}
+  </delete>
+
+</mapper>

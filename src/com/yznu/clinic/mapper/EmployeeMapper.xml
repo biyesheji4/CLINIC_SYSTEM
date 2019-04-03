@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Employee">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="employee_date" jdbcType="VARCHAR" property="employeeDate" />
+    <result column="employee_email" jdbcType="VARCHAR" property="employeeEmail" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+    <result column="employee_num" jdbcType="INTEGER" property="employeeNum" />
+    <result column="employee_occupation" jdbcType="VARCHAR" property="employeeOccupation" />
+    <result column="employee_salary" jdbcType="VARCHAR" property="employeeSalary" />
+    <result column="employee_tel" jdbcType="VARCHAR" property="employeeTel" />
+      <result column="employee_state" jdbcType="VARCHAR" property="employeeState" />
+    <result column="departments_id" jdbcType="INTEGER" property="departmentsId" />
+      <result column="employee_sex" jdbcType="VARCHAR" property="employeeSex" />
+      <result column="employee_birth" jdbcType="VARCHAR" property="employeeBirth" />
+      <association  property="departments" javaType="com.yznu.clinic.beans.Departments"
+      column="departments_id" select="getCategoryIdAndName"/>
+
+  </resultMap>
+    <resultMap id="DepartmentsResultMap" type="com.yznu.clinic.beans.Departments">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="departments_content" jdbcType="VARCHAR" property="departmentsContent" />
+        <result column="departments_name" jdbcType="VARCHAR" property="departmentsName" />
+    </resultMap>
+
+    <select id="getCategoryIdAndName" parameterType="Integer"
+            resultMap="DepartmentsResultMap">
+        select * from departments where id = #{id}
+    </select>
+
+
+    <insert id="insertEmployee" parameterType="com.yznu.clinic.beans.Employee">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            <!-- SELECT LAST_INSERT_ID()：得到刚insert到数据表中的记录的主键值，只适用于自增主键 -->
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="employeeDate != null">
+                employee_date,
+            </if>
+            <if test="employeeEmail != null">
+                employee_email,
+            </if>
+            <if test="employeeName != null">
+                employee_name,
+            </if>
+            <if test="employeeNum != null">
+                employee_num,
+            </if>
+            <if test="employeeOccupation != null">
+                employee_occupation,
+            </if>
+            <if test="employeeSalary != null">
+                employee_salary,
+            </if>
+            <if test="employeeTel != null">
+                employee_tel,
+            </if>
+            <if test="departmentsId != null">
+                departments_id ,
+            </if>
+            <if test="employeeSex != null">
+                employee_sex ,
+            </if>
+            <if test="employeeBirth != null">
+                employee_birth ,
+            </if>
+            <if test="employeeState != null">
+                employee_state ,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="employeeDate != null">
+                #{employeeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeEmail != null">
+                #{employeeEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeName != null">
+               #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeNum != null">
+                #{employeeNum,jdbcType=INTEGER},
+            </if>
+            <if test="employeeOccupation != null">
+               #{employeeOccupation,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeSalary != null">
+                #{employeeSalary,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeTel != null">
+                #{employeeTel,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsId != null">
+                 #{departmentsId,jdbcType=INTEGER},
+            </if>
+            <if test="employeeSex != null">
+                #{employeeSex,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeBirth != null">
+                #{employeeBirth,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeState != null">
+                #{employeeState,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateEmployee" parameterType="com.yznu.clinic.beans.Employee">
+        update employee
+        <set>
+            <if test="employeeDate != null">
+                employee_date = #{employeeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeEmail != null">
+                employee_email = #{employeeEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeName != null">
+                employee_name = #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeNum != null">
+                employee_num = #{employeeNum,jdbcType=INTEGER},
+            </if>
+            <if test="employeeOccupation != null">
+                employee_occupation = #{employeeOccupation,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeSalary != null">
+                employee_salary = #{employeeSalary,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeTel != null">
+                employee_tel = #{employeeTel,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentsId != null">
+                departments_id = #{departmentsId,jdbcType=INTEGER},
+            </if>
+            <if test="employeeSex != null">
+                employee_sex = #{employeeSex,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeBirth != null">
+                employee_birth = #{employeeBirth,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeState!= null">
+                employee_state = #{employeeState,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+
+
+    <!-- 分页查询 -->
+
+  <select id="queryEmployeePage" resultMap="BaseResultMap" parameterType="com.yznu.clinic.util.Page">
+ select employee.*,departments.departments_name from employee left join departments on departments_id = departments.id  where 1=1
+    <if  test="param.employeeName!=null and param.employeeName!=''">
+    and  employee_name like "%"#{param.employeeName}"%"
+  </if>
+      <if test="param.textarea!=null and param.textarea!=''">
+          and departments_id =#{param.textarea}
+      </if>
+      <if test="param.state!=null and param.state!=''">
+          and employee_state =#{param.state}
+      </if>
+ order by ${param.sort} ${param.sortOrder} limit ${pageNumber},${pageSize}
+
+</select>
+
+
+
+  <!-- 总条数查询 -->
+  <select id="getAllEmployeeCount" resultType="int">
+    select count(*) from employee where 1=1
+    <if  test="param.employeeName!=null and param.employeeName!=''">
+      and  employee_name like "%"#{param.employeeName}"%"
+    </if>
+      <if test="param.textarea!=null and param.textarea!=''">
+          and departments_id =#{param.textarea}
+      </if>
+      <if test="param.state!=null and param.state!=''">
+          and employee_state =#{param.state}
+      </if>
+  </select>
+
+
+    <select id="queryemployeeById" resultMap="BaseResultMap" parameterType="java.util.Map">
+  select * from employee where id=#{id}
+
+</select>
+
+
+
+    <delete id="deleteemployee" parameterType="java.lang.Integer">
+        delete from employee
+    where id = #{id}
+    </delete>
+
+    <!-- 登陆 -->
+    <select id="login" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select * from employee where employee_num=#{username} and employee_tel=#{password} and employee_state = 1;
+    </select>
+</mapper>

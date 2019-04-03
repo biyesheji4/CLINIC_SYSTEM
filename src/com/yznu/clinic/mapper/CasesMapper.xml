@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.CasesMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Cases">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cases_content" jdbcType="VARCHAR" property="casesContent" />
+    <result column="cases_date" jdbcType="VARCHAR" property="casesDate" />
+    <result column="cases_state" jdbcType="VARCHAR" property="casesState" />
+    <result column="cases_programme" jdbcType="VARCHAR" property="casesProgramme" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <association  property="employee" javaType="com.yznu.clinic.beans.Employee"
+                  column="doctor_id" select="getEmployee"/>
+    <association  property="programme" javaType="com.yznu.clinic.beans.Programme"
+                  column="cases_programme" select="getPrograme"/>
+  </resultMap>
+  <resultMap id="EmployeeMap" type="com.yznu.clinic.beans.Employee">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="employee_date" jdbcType="VARCHAR" property="employeeDate" />
+    <result column="employee_email" jdbcType="VARCHAR" property="employeeEmail" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+    <result column="employee_num" jdbcType="INTEGER" property="employeeNum" />
+    <result column="employee_occupation" jdbcType="VARCHAR" property="employeeOccupation" />
+    <result column="employee_salary" jdbcType="VARCHAR" property="employeeSalary" />
+    <result column="employee_tel" jdbcType="VARCHAR" property="employeeTel" />
+    <result column="departments_id" jdbcType="INTEGER" property="departmentsId" />
+    <result column="employee_sex" jdbcType="VARCHAR" property="employeeSex" />
+    <result column="employee_birth" jdbcType="VARCHAR" property="employeeBirth" />
+    <association  property="departments" javaType="com.yznu.clinic.beans.Departments"
+                  column="departments_id" select="getDepartmentName"/>
+  </resultMap>
+
+  <resultMap id="RegisteredMap" type="com.yznu.clinic.beans.Registered">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="departments_id" jdbcType="VARCHAR" property="departmentsId" />
+    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_idcard" jdbcType="VARCHAR" property="patientIdcard" />
+    <result column="patient_sex" jdbcType="VARCHAR" property="patientSex" />
+    <result column="patient_tel" jdbcType="VARCHAR" property="patientTel" />
+    <result column="registered_content" jdbcType="VARCHAR" property="registeredContent" />
+    <result column="registered_date" jdbcType="VARCHAR" property="registeredDate" />
+    <result column="registered_money" jdbcType="DOUBLE" property="registeredMoney" />
+    <result column="registered_state" jdbcType="VARCHAR" property="registeredState" />
+    <association  property="departments" javaType="com.yznu.clinic.beans.Departments"
+                  column="departments_id" select="getDepartmentName"/>
+  </resultMap>
+
+  <resultMap id="ProgrammeResultMap" type="com.yznu.clinic.beans.Programme">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="programme_date" jdbcType="VARCHAR" property="programmeDate" />
+    <result column="programme_medicine" jdbcType="VARCHAR" property="programmeMedicine" />
+    <result column="programme_projects" jdbcType="VARCHAR" property="programmeProjects" />
+    <result column="programme_mony" jdbcType="DOUBLE" property="programmeMony" />
+    <result column="programme_state" jdbcType="DOUBLE" property="programmeState" />
+    <result column="patient_id" jdbcType="INTEGER" property="patientId" />
+    <association  property="registered" javaType="com.yznu.clinic.beans.Registered"
+                  column="patient_id" select="getRegistered"/>
+  </resultMap>
+  <resultMap id="DepartmentsResultMap" type="com.yznu.clinic.beans.Departments">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="departments_content" jdbcType="VARCHAR" property="departmentsContent" />
+    <result column="departments_name" jdbcType="VARCHAR" property="departmentsName" />
+  </resultMap>
+
+  <select id="getDepartmentName" parameterType="Integer"
+          resultMap="DepartmentsResultMap">
+        select * from departments where id = #{id}
+    </select>
+  <select id="getEmployee" parameterType="Integer" resultMap="EmployeeMap">
+    select * from employee where id = #{id}
+  </select>
+  <select id="getRegistered" parameterType="Integer" resultMap="RegisteredMap">
+    select * from registered where id = #{id}
+  </select>
+  <select id="getPrograme" parameterType="Integer" resultMap="ProgrammeResultMap">
+    select * from programme where id = #{id}
+  </select>
+  <insert id="addcase" parameterType="com.yznu.clinic.beans.Cases">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      <!-- SELECT LAST_INSERT_ID()：得到刚insert到数据表中的记录的主键值，只适用于自增主键 -->
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into cases
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="casesContent != null">
+        cases_content,
+      </if>
+      <if test="casesDate != null">
+        cases_date,
+      </if>
+      <if test="casesState != null">
+        cases_state,
+      </if>
+      <if test="casesProgramme != null">
+        cases_programme,
+      </if>
+      <if test="doctorId != null">
+        doctor_id,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="casesContent != null">
+        #{casesContent,jdbcType=VARCHAR},
+      </if>
+      <if test="casesDate != null">
+        #{casesDate,jdbcType=VARCHAR},
+      </if>
+      <if test="casesState != null">
+        #{casesState,jdbcType=VARCHAR},
+      </if>
+      <if test="casesProgramme != null">
+        #{casesProgramme,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCase" parameterType="com.yznu.clinic.beans.Cases">
+    update cases
+    <set>
+      <if test="casesContent != null">
+        cases_content = #{casesContent,jdbcType=VARCHAR},
+      </if>
+      <if test="casesDate != null">
+        cases_date = #{casesDate,jdbcType=VARCHAR},
+      </if>
+      <if test="casesProgramme != null">
+        cases_programme = #{casesProgramme,jdbcType=VARCHAR},
+      </if>
+      <if test="casesState != null">
+        cases_state = #{casesState,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null">
+        doctor_id = #{doctorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据身份证号查询 -->
+  <select id="querycaseByIdcard" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select * from cases c left join registered r on r.id = c.patient_id where r.patient_idcard = #{idcard}
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="querycasePage" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from (select cases.* from cases left join employee on  doctor_id =employee.id
+    left join programme on programme.id = cases_programme
+    where cases_state = 1
+    <if test="param.data!=null and param.data!=''">
+      and cases_date =#{param.data}
+    </if>
+    limit ${pageNumber},${pageSize}) as a
+    order by a.${param.sort} ${param.sortOrder}
+  </select>
+
+
+  <!-- 总条数查询 -->
+  <select id="getAllcaseCount" resultType="int">
+    select COUNT(*) from cases where cases_state=1
+    <if test="param.data!=null and param.data!=''">
+      and cases_date =#{param.data}
+    </if>
+  </select>
+
+  <!-- 删除-->
+  <delete id="deletecase" parameterType="java.lang.Integer">
+    delete from cases
+    where id = #{id}
+  </delete>
+
+<!--医生诊疗人数排行 -->
+  <select id="querytop" resultType="map" parameterType="java.util.Map">
+    SELECT e.employee_name as employee_name,c.*,COUNT(c.doctor_id)as casesContent  from cases c left join employee e on e.id= c.doctor_id WHERE 1=1
+    <if test="registeredDate != null and registeredDate!=''">
+      and  cases_date LIKE "%"#{registeredDate}"%"
+    </if>
+    <if test="startDate != null and endDate!=null and startDate!='' and endDate!=''">
+      and  cases_date BETWEEN #{startDate} and #{endDate}
+    </if>
+    GROUP BY  c.doctor_id
+  </select>
+
+
+
+</mapper>

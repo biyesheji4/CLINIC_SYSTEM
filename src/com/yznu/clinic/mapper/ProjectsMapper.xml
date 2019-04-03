@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yznu.clinic.dao.ProjectsMapper">
+  <resultMap id="BaseResultMap" type="com.yznu.clinic.beans.Projects">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="projects_name" jdbcType="VARCHAR" property="projectsName" />
+    <result column="projects_content" jdbcType="VARCHAR" property="projectsContent" />
+    <result column="projects_date" jdbcType="VARCHAR" property="projectsDate" />
+    <result column="projects_remarks" jdbcType="VARCHAR" property="projectsRemarks" />
+    <result column="projects_state" jdbcType="VARCHAR" property="projectsState" />
+    <result column="projects_num" jdbcType="INTEGER" property="projectsNum" />
+    <result column="project_money" jdbcType="DOUBLE" property="projectMoney" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, projects_name, projects_content, projects_date, projects_remarks, projects_state,
+    projects_num,department_id,project_money
+  </sql>
+  <select id="querysomedata" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from projects where (projects_name like #{searchindex}
+                                  or projects_content like #{searchindex}
+                                  or projects_num like #{searchindex}
+                                  or projects_remarks like #{searchindex} )
+                                 and projects_state=#{delflag}
+                                 and str_to_date(projects_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                                 str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+    ORDER BY str_to_date(projects_date, '%Y-%m-%d %H:%i:%S') limit #{currIndex} , #{pageSize}
+  </select>
+  <select id="queryProjectsBySql" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select * from projects where projects_state= #{state} limit #{currIndex} , #{pageSize}
+  </select>
+  <select id="queryusededepartment" resultType="java.util.HashMap">
+    select id,departments_name as name from departments where departments_state='1'
+  </select>
+  <select id="queryTotalsize" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(id) from projects where (projects_name like #{searchindex}
+                                          or projects_content like #{searchindex}
+                                          or projects_num like #{searchindex}
+                                          or projects_remarks like #{searchindex} )
+                                         and projects_state=#{delflag}
+                                         and str_to_date(projects_date, '%Y-%m-%d %H:%i:%S') BETWEEN
+                                         str_to_date( #{date1}, '%Y-%m-%d %H:%i:%S') AND str_to_date( #{date2}, '%Y-%m-%d %H:%i:%S')
+    ORDER BY str_to_date(projects_date, '%Y-%m-%d %H:%i:%S')
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from projects
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from projects
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from projects
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yznu.clinic.beans.Projects">
+    insert into projects (id, projects_name, projects_content,
+                          projects_date, projects_remarks, projects_state,
+                          projects_num,department_id,project_money)
+    values (#{id,jdbcType=INTEGER}, #{projectsName,jdbcType=VARCHAR}, #{projectsContent,jdbcType=VARCHAR},
+            #{projectsDate,jdbcType=VARCHAR}, #{projectsRemarks,jdbcType=VARCHAR}, #{projectsState,jdbcType=VARCHAR},
+            #{projectsNum,jdbcType=INTEGER},#{departmentId,jdbcType=INTEGER},#{projectMoney,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yznu.clinic.beans.Projects">
+    insert into projects
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectsName != null">
+        projects_name,
+      </if>
+      <if test="projectsContent != null">
+        projects_content,
+      </if>
+      <if test="projectsDate != null">
+        projects_date,
+      </if>
+      <if test="projectsRemarks != null">
+        projects_remarks,
+      </if>
+      <if test="projectsState != null">
+        projects_state,
+      </if>
+      <if test="projectsNum != null">
+        projects_num,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="departmentId != null">
+        project_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectsName != null">
+        #{projectsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsContent != null">
+        #{projectsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsDate != null">
+        #{projectsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsRemarks != null">
+        #{projectsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsState != null">
+        #{projectsState,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsNum != null">
+        #{projectsNum,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="projectMoney != null">
+        #{projectMoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yznu.clinic.beans.Projects">
+    update projects
+    <set>
+      <if test="projectsName != null">
+        projects_name = #{projectsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsContent != null">
+        projects_content = #{projectsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsDate != null">
+        projects_date = #{projectsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsRemarks != null">
+        projects_remarks = #{projectsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsState != null">
+        projects_state = #{projectsState,jdbcType=VARCHAR},
+      </if>
+      <if test="projectsNum != null">
+        projects_num = #{projectsNum,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="projectMoney != null">
+        project_money = #{projectMoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yznu.clinic.beans.Projects">
+    update projects
+    set projects_name = #{projectsName,jdbcType=VARCHAR},
+      projects_content = #{projectsContent,jdbcType=VARCHAR},
+      projects_date = #{projectsDate,jdbcType=VARCHAR},
+      projects_remarks = #{projectsRemarks,jdbcType=VARCHAR},
+      projects_state = #{projectsState,jdbcType=VARCHAR},
+      projects_num = #{projectsNum,jdbcType=INTEGER},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      project_money = #{projectMoney,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+  <select id="queryprojectPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from (select * from projects WHERE projects_state=1
+    <if test="param.name!=null and param.name!=''">
+      and projects_name LIKE "%"#{param.name}"%"
+    </if>
+    limit ${pageNumber},${pageSize}) as a
+    order by a.${param.sort} ${param.sortOrder}
+  </select>
+
+  <!-- 总条数查询 -->
+  <select id="getAllprojectCount" resultType="int">
+    select count(*) from projects where projects_state=1
+    <if test="param.name!=null and param.name!=''">
+      and projects_name LIKE "%"#{param.name}"%"
+    </if>
+  </select>
+</mapper>
