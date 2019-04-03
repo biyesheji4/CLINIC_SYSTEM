@@ -143,12 +143,12 @@ $(function() {
                                 data: {"medicinesDate": row.medicinesDate},
                                 success:function (result) {
                                     if(result.b<=result.a){
-                                        ccc = '<button type="button" class="btn btn-sm btn-default" onclick="share('+row.id+')"><span class="glyphicon glyphicon-share-alt" style="color: rgb(255, 140, 60);" ></button>';
+                                        ccc = '<button type="button" class="btn btn-sm btn-default" onclick="share('+row.id+')">出库</button>';
                                     }else {
                                         if(result.c <= result.d){
-                                            ccc = '<button type="button" class="btn btn-sm btn-default" onclick="past()"><span class="glyphicon glyphicon-share-alt" style="color: rgb(255, 140, 60);" ></button>';
+                                            ccc = '<button type="button" class="btn btn-sm btn-default" onclick="past()">出库</button>';
                                         }else {
-                                            ccc = '<button type="button" class="btn btn-sm btn-default" onclick="share('+row.id+')"><span class="glyphicon glyphicon-share-alt" style="color: rgb(255, 140, 60);" ></button>';
+                                            ccc = '<button type="button" class="btn btn-sm btn-default" onclick="share('+row.id+')">出库</button>';
                                         }
                                     }
                                 }

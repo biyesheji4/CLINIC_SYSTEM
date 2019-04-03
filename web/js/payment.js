@@ -87,7 +87,7 @@ $(function() {
                         align: 'center',
                         formatter:function(value,row,index){
                             if(row.programmeState=="1"){
-                                var d = '<button type="button" class="btn btn-sm btn-default" onclick="insert('+row.id+')"><span class="glyphicon glyphicon-share-alt" ></button>';
+                                var d = '<button type="button" class="btn btn-sm btn-default" onclick="insert('+row.id+')">患者已完成取药</button>';
                                 return d;
                             }
 

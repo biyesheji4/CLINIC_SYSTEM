@@ -1,0 +1,95 @@
+
+/*==============================================
+    BASIC  STYLES    
+    =============================================*/
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height:25px;
+}
+
+
+
+
+.page-head-line {
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 800;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #d9edf7;
+    margin-bottom: 10px;
+}
+
+.page-subhead-line {
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    font-style:italic;
+    margin-bottom:30px;
+    border-bottom:1px dashed #00CA79;
+
+}
+.panel-heading{
+    color:white !important;
+    font-size: 20px !important;
+}
+
+
+
+/*==============================================
+    MEDIA QUERIES     
+    =============================================*/
+
+@media (min-width:768px) {
+    #page-wrapper {
+        margin: 0 0 0 260px;
+        padding: 15px 30px;
+        min-height: 1200px;
+    }
+
+
+    .navbar-side {
+        z-index: 1;
+        position: absolute;
+        width: 260px;
+    }
+
+    .navbar {
+        border-radius: 0px;
+    }
+}
+.baseRow1{
+    margin:0 0 15px 0;
+}
+.number{
+    display: inline-block;
+    margin-right: 5%;
+}
+.name{
+     display: inline-block;
+    margin: 0 5% 0 10%;
+}
+.infoInput{
+    text-align: center;
+    border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+label{
+    font-weight: normal;
+}
+
+.modal-body .config-search {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.btn-search{color:#FFFFFF;background:#48A3F0;padding: 3px 15px 3px 15px;outline:none;border: none;box-shadow: none;}
+
+.search-detail table{   width: 100%;  border: 1px solid #dddddd;  border-collapse: collapse;table-layout:fixed;  }
+.search-detail table tr th {    text-align: center;font-weight: 500;overflow: hidden;
+    word-break: break-all;text-overflow: ellipsis; white-space: nowrap;background-color:#e5ecf9;  padding: 8px 15px;font-size: 12px;}
+.search-detail table tr td { text-align: center;
+    border: 1px solid #dddddd;overflow: hidden;word-break: break-all;text-overflow: ellipsis;
+    white-space: nowrap;    padding: 5px 0px;font-size: 12px;}

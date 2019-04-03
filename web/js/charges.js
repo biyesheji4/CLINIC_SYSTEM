@@ -94,10 +94,10 @@ $(function() {
                         formatter:function(value,row,index){
                             if(row.programmeState=="0"){
                                 if(row.programmeMedicine != null) {
-                                    var d = '<button type="button" class="btn btn-sm btn-default" onclick="insert(' + row.id + ')"><span class="glyphicon glyphicon-share-alt" ></button>';
+                                    var d = '<button type="button" class="btn btn-sm btn-default" onclick="insert(' + row.id + ')">提交至药房</button>';
                                     return d;
                                 }else {
-                                    var c = '<button type="button" class="btn btn-sm btn-default" onclick="update(' + row.id + ')"><span class="glyphicon glyphicon-share-alt" ></button>';
+                                    var c = '<button type="button" class="btn btn-sm btn-default" onclick="update(' + row.id + ')">提交至检查科室</button>';
                                     return c;
                                 }
                             }else {
