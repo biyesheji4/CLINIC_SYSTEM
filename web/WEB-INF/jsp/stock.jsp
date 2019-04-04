@@ -103,13 +103,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-sm-2 control-label">库存告警量</label>
+                                                        <label class="col-sm-2 control-label">过期日期</label>
                                                         <div class="col-sm-3">
-                                                            <input  type="text" class="form-control" data-provide="typeahead" name="medicinesLimit" id="medicinesLimit">
+                                                        <div class=" input-group form_date date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input" data-link-format="yyyy-mm-dd">
+                                                            <input id="medicinesDate" class="infoInput" type="text" value="" readonly>
+                                                            <span class="input-group-addon">
+				                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                        </div>
                                                         </div>
                                                         <label class="col-sm-2 control-label">类别</label>
                                                         <div class="col-sm-3">
-                                                            <select id='medicinesType'>
+                                                            <select id='medicinesType' onchange="queryIsExistence()">
                                                                 <option value=''>--请选择--</option>
                                                                 <option value='片剂'>片剂</option>
                                                                 <option value='胶囊剂'>胶囊剂</option>
@@ -122,14 +127,13 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="col-sm-2 control-label">过期日期</label>
-                                                            <div class=" input-group form_date date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input" data-link-format="yyyy-mm-dd">
-                                                                <input id="medicinesDate" class="infoInput" type="text" value="" readonly>
-                                                                <span class="input-group-addon">
-				                                                    <i class="fa fa-calendar"></i>
-                                                                </span>
-                                                            </div>
+                                                    <div class="form-group" id="querym" style="display:none">
+                                                        <label class="col-sm-2 control-label">库存告警量</label>
+                                                        <div class="col-sm-3">
+                                                            <input  type="text" class="form-control" name="medicinesLimit" id="medicinesLimit" style="width: 100%">
+                                                            <input  type="hidden" class="form-control"  id="medicinesBatch" value="1" style="width: 100%">
+                                                        </div>
+
                                                         <span class="name"></span>
                                                             <label id = 'mon'></label>
                                                     </div>
@@ -179,6 +183,9 @@
 
 
 
+<marquee  onMouseOut="this.start()" onMouseOver="this.stop()" direction="left"  behavior="scroll"  scrollamount="10"  scrolldelay="10"  loop="2"    height="40"  bgcolor="#48A3F0" id="marquee" >
+
+</marquee>
 
 <div class="container index-main">
     <div class="index-main-top">

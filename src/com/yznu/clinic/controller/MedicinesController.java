@@ -60,6 +60,33 @@ public class MedicinesController {
         map.put("medicines",list);
         return map;
     }
+    //根据药品名称、类别查询
+    @RequestMapping(value = "querymedicines.do")
+    @ResponseBody
+    public Map querymedicines(HttpServletRequest req){
+        Map param = new HashMap();
+        String medicinesName = req.getParameter("medicinesName");
+        String medicinesType = req.getParameter("medicinesType");
+        param.put("medicinesname",medicinesName);param.put("type",medicinesType);
+        List list = medicinesSV.querymedicines(param);
+        Map map = new HashMap();
+        map.put("medicines",list);
+        return map;
+    }
+
+    //查询分类药品的药品总量
+    @RequestMapping(value = "querymedicinesSum.do")
+    @ResponseBody
+    public Map querymedicinesSum(HttpServletRequest req){
+        Map param = new HashMap();
+        param.put("nowDate",DateUtils.getNowTime());
+        List list = medicinesSV.querymedicinesSum(param);
+        Map map = new HashMap();
+        map.put("medicines",list);
+        return map;
+    }
+
+
 
     //修改药品类别
     @RequestMapping(value = "updatemedicinesType.do")
@@ -86,12 +113,14 @@ public class MedicinesController {
         Double medicinesMoney =Double.parseDouble(req.getParameter("medicinesMoney"));
         Double medicinesBid = Double.parseDouble(req.getParameter("medicinesBid"));
         String medicinesDate = req.getParameter("medicinesDate");
+        String medicinesBatch = req.getParameter("medicinesBatch");
         String medicinesInputdate =DateUtils.getNowTime();
         Medicines medicines = new Medicines();
         medicines.setMedicinesName(medicinesName);medicines.setMedicinesType(medicinesType);
         medicines.setMedicinesNum(medicinesNum); medicines.setMedicinesLimit(medicinesLimit);
         medicines.setMedicinesMoney(medicinesMoney);medicines.setMedicinesBid(medicinesBid);
         medicines.setMedicinesDate(medicinesDate); medicines.setMedicinesInputdate(medicinesInputdate);
+        medicines.setMedicinesBatch(Integer.parseInt(medicinesBatch));
         medicinesSV.addmedicines(medicines);
 
          /*进库后 执行账单 添加*/

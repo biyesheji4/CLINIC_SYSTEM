@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class Medicinesimpl implements MedicinesSV {
     @Autowired
@@ -59,5 +61,15 @@ public class Medicinesimpl implements MedicinesSV {
                 medicinesMapper.deletemedicines(strid);
             }
         }
+    }
+
+    @Override
+    public List querymedicines(Map map) {
+        return medicinesMapper.querymedicines(map);
+    }
+
+    @Override
+    public List querymedicinesSum(Map map) {
+        return medicinesMapper.querymedicinesSum(map);
     }
 }

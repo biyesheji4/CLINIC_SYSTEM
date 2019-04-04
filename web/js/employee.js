@@ -387,6 +387,7 @@ function formValidator() {
 $('#updateemployeeModal').on('hidden.bs.modal', function() {
     $("#updateform").data('bootstrapValidator').destroy();
     $("#updateform").data('bootstrapValidator', null);
+    document.getElementById("updateform").reset();
     formValidator();
 });
 
@@ -555,6 +556,7 @@ $('#inputModal').on('hidden.bs.modal', function() {
     $(this).removeData('bs.modal');
     $("#form").data('bootstrapValidator').destroy();
     $("#form").data('bootstrapValidator', null);
+    document.getElementById("form").reset();
     forminsertValidator();
 });
 

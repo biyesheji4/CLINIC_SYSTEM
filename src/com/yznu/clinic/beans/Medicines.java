@@ -3,21 +3,31 @@ package com.yznu.clinic.beans;
 public class Medicines {
     private Integer id;
 
-    private String medicinesInputdate;
+    private String medicinesInputdate;//药品进库时间
 
-    private String medicinesDate;
+    private String medicinesDate;//药品过期时间
 
-    private String medicinesName;
+    private String medicinesName;//药品名称
 
-    private String medicinesType;
+    private String medicinesType;//药品类别
 
-    private Integer medicinesLimit;
+    private Integer medicinesLimit;//药品库存下限
 
-    private Integer medicinesNum;
+    private Integer medicinesNum;//药品库存数量
 
-    private Double medicinesMoney;
+    private Double medicinesMoney;//药品售价
 
-    private Double medicinesBid;
+    private Double medicinesBid;//药品进价
+
+    private Integer medicinesBatch;//药品批次
+
+    public Integer getMedicinesBatch() {
+        return medicinesBatch;
+    }
+
+    public void setMedicinesBatch(Integer medicinesBatch) {
+        this.medicinesBatch = medicinesBatch;
+    }
 
     public Double getMedicinesBid() {
         return medicinesBid;

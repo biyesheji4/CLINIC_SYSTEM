@@ -107,18 +107,18 @@ $(function() {
                         title: '药品库存数量',
                         align: 'center'
                     },
-                    {
-                        field: 'medicinesLimit',
-                        title: '药品库存下限',
-                        align: 'center',
-                        formatter:function(value,row,index){
-                            if(value>=row.medicinesNum){
-                                return "<p class='text-danger'>库存不足</p>";
-                            }else if(value<row.medicinesNum){
-                                return "<p class='text-primary'>库存充足</p>";
-                            }
-                        }
-                    },
+                    // {
+                    //     field: 'medicinesLimit',
+                    //     title: '药品库存下限',
+                    //     align: 'center',
+                    //     formatter:function(value,row,index){
+                    //         if(value>=row.medicinesNum){
+                    //             return "<p class='text-danger'>库存不足</p>";
+                    //         }else if(value<row.medicinesNum){
+                    //             return "<p class='text-primary'>库存充足</p>";
+                    //         }
+                    //     }
+                    // },
                     {
                         field: 'medicinesMoney',
                         title: '药品售价（元）',
@@ -174,8 +174,30 @@ $(function() {
             param = {"sort":sort,"sortOrder":sortOrder,"data":data,"type":type,"name":name};
             //alert(JSON.stringify(param));
             $.tableDetailRefresh();
+            querymedicinesSum();
     });
     $("#search").click();
+
+    /**
+     * 判断是否有过期
+     */
+    function querymedicinesSum() {
+        var text="<font  face='隶书'  color='#FFFFFF'  size='5' >库存不足药品：</font>";
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: "querymedicinesSum.do",
+            dataType: "json",
+            success: function (result) {
+              for(var i=0;i<result.medicines.length;i++){
+                  if(result.medicines[i].medicinesNum<result.medicines[i].medicinesLimit){
+                        text+= "<font  face='隶书'  color='#FFFFFF'  size='5' >"+result.medicines[i].medicinesType+" 的 "+result.medicines[i].medicinesName+"      ；</font>";
+                  }
+              }
+              $("#marquee").html(text);
+            }
+        });
+    }
 });
 
 //进入药品进库模态框
@@ -274,6 +296,7 @@ $(document).ready(function() {
 $('#medicinesinputModal').on('hidden.bs.modal', function() {
     $("#form").data('bootstrapValidator').destroy();
     $("#form").data('bootstrapValidator', null);
+    document.getElementById("form").reset();
     formValidator();
 });
 
@@ -289,6 +312,7 @@ $("#insertmedicines").click(function () {
         var medicinesDate = $("#medicinesDate").val();
         var employee_num = $("#employee_num").val();
         var employee_id = $("#employee_id").val();
+        var medicinesBatch = $("#medicinesBatch").val();
         var mon = medicinesNum * medicinesBid;
             $.ajax({
                 async: false,
@@ -305,7 +329,8 @@ $("#insertmedicines").click(function () {
                     "medicinesDate": medicinesDate,
                     "bill_mon": mon,
                     "employee_num": employee_num,
-                    "employee_id": employee_id
+                    "employee_id": employee_id,
+                    "medicinesBatch":medicinesBatch
                 },
                 success: function (result) {
                     swal("",
@@ -317,7 +342,38 @@ $("#insertmedicines").click(function () {
             });
         }
 });
+function queryIsExistence() {
+    var medicinesName = $("#medicinesName").val();
+    var medicinesType = $("#medicinesType").val();
+    $.ajax({
+        async: false,
+        type: "POST",
+        url: "querymedicines.do",
+        dataType: "json",
+        data: {
+            "medicinesName": medicinesName,
+            "medicinesType": medicinesType
+        },
+        success: function (result) {
+            if(result.medicines.length>0){
+                var querym=document.getElementById('querym');
+                if(querym.style.display=="block"){
+                    querym.style.display="none";
+                }
+                $("#medicinesLimit").val(result.medicines[0].medicinesLimit);
+                $("#medicinesBatch").val(result.medicines[result.medicines.length-1].medicinesBatch+1);
+            }else {
+                var querym=document.getElementById('querym');
+                if(querym.style.display=="none"){
+                    querym.style.display="block";
+                }
+                $("#medicinesLimit").val("");
 
+            }
+
+        }
+    });
+}
 
 /**
  * 删除单个过期药品
@@ -452,7 +508,7 @@ $("#medicineshare").click(function () {
     }else {
         if(medicinesNum<0){
             swal("",
-                "出库数量多于库存数量，请结合其他编号药品出库！",
+                "出库数量多于库存数量，请结合其他批次药品出库！",
                 "error");
         }else if(medicinesNum ==0){
             var deltype = "2";

@@ -5,6 +5,7 @@ import com.yznu.clinic.util.PageList;
 import com.yznu.clinic.util.Query;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MedicinesSV {
     /*药品明细*/
@@ -25,4 +26,9 @@ public interface MedicinesSV {
     /*删除药品*/
     public void deletemedicines(String id);
 
+    /*根据药品名称、类别查询*/
+    public List querymedicines(Map map);
+
+    /*查询分类药品的药品总量*/
+    public List querymedicinesSum(Map map);
 }
