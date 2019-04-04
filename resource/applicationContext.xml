@@ -18,7 +18,8 @@
                         http://www.springframework.org/schema/tx/spring-tx.xsd
                          http://www.springframework.org/schema/task 
                         http://www.springframework.org/schema/task/spring-task-3.0.xsd">  
-                          
+
+
     <!-- 使用注解式注入 -->  
     <context:annotation-config />
 
