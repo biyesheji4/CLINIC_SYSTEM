@@ -42,14 +42,14 @@ $(function () {
                     },
                 }
             },
-            programme: {
-                message: '治疗方案验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '治疗方案不能为空'
-                    },
-                }
-            },
+            // programme: {
+            //     message: '治疗方案验证失败',
+            //     validators: {
+            //         notEmpty: {
+            //             message: '治疗方案不能为空'
+            //         },
+            //     }
+            // },
         }
     });
 
@@ -99,6 +99,7 @@ $(function () {
 $("#chehui").click(function () {
     var caseId = $("#caseId").val();
     var programmeId = $("#programmeId").val();
+    var registeredid = $("#registeredid").val();
     if(caseId!=null&&caseId!=''&&programmeId!=null&&programmeId!=''){
         $.ajax({
             async: false,
@@ -107,13 +108,18 @@ $("#chehui").click(function () {
             dataType: "json",
             data: {
                 "caseId": caseId,
-                "programmeId":programmeId
+                "programmeId":programmeId,
+                "registeredid":registeredid
             },
             success: function (result) {
                 if(result.msg=="撤回成功！"){
                     swal("",
                         "撤回成功！",
                         "success");
+                    $("#programme").val("");
+                    $("#money").val("0");
+                    $("#mid").val("0");
+                    $("#mnum").val("0");
                 }else {
                     swal("",
                         "撤回失败！该订单已缴费",

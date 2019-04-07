@@ -162,6 +162,13 @@ public class CasesController {
        if(list.getProgrammeState().equals("0")){
            casesSV.deletecase(caseId);
            programmeSV.deleteprogramme(programmeId);
+
+           /*病例撤回 更新挂号单状态*/
+           int id = Integer.parseInt(req.getParameter("registeredid"));
+           Registered r = new Registered();
+           r.setId(id);
+           r.setRegisteredState("1");
+           registeredSV.updateRegistered(r);
            map.put("msg","撤回成功！");
        }else {
            map.put("msg","撤回失败！");

@@ -342,6 +342,7 @@ $("#insertmedicines").click(function () {
             });
         }
 });
+
 function queryIsExistence() {
     var medicinesName = $("#medicinesName").val();
     var medicinesType = $("#medicinesType").val();
