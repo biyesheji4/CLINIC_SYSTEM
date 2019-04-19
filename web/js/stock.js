@@ -297,6 +297,9 @@ $('#medicinesinputModal').on('hidden.bs.modal', function() {
     $("#form").data('bootstrapValidator').destroy();
     $("#form").data('bootstrapValidator', null);
     document.getElementById("form").reset();
+    var querym=document.getElementById('querym');
+    querym.style.display="none";
+    $("#mon").html("");
     formValidator();
 });
 

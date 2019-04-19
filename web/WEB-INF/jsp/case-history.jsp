@@ -14,6 +14,7 @@
     <link href="${pageContext.request.contextPath}/assets/css/basic.css" rel="stylesheet" />
     <link href="${pageContext.request.contextPath}/assets/css/custom.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sweet-alert.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/public1.css">
     <%--<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />--%>
 </head>
 <body>

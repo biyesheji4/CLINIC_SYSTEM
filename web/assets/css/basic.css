@@ -77,7 +77,7 @@ body {
         transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 label{
-    font-weight: normal;
+    font-weight: 700;
 }
 
 .modal-body .config-search {

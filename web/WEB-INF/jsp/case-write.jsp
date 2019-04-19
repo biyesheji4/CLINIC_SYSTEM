@@ -17,101 +17,127 @@
     <link href="${pageContext.request.contextPath}/assets/css/custom.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sweet-alert.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrapvalidator.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/public1.css">
     <%--<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />--%>
 </head>
 
 <body >
 <input type="hidden" value="${registered.id}" id="registeredid">
 <input  id="employee_id" type="hidden" class="infoInput" value="<%=request.getSession().getAttribute("employee_id")%>">
-<div>
-    <div>
-        <div class="col-md-12">
-            <h1 class="page-head-line" style="text-align: center">病例书写</h1>
-            <button id="before" class="btn btn-info ">历史病例</button>
-            <button id="Selectprojects"  class="btn btn-info" data-toggle="modal" data-target="#projectsModal" value="">诊疗项目</button>
-        </div>
-    </div>
-    <div id="beforbingli">
-        <div class="col-md-6 col-sm-6 col-xs-12" style="left: 25%">
-            <div class="panel panel-info">
-                <div class="panel-heading" style="text-align: center">
-                    病例详情
-                </div>
-                <form id="caseform">
-                <div class="panel-body">
-                        <div class="baseInfo">
-                            <div class="baseRow1">
-                                <span class="number">身份证号</span> <input  type="text" class="infoInput" data-provide="typeahead" value="${registered.patientIdcard}">
-                                <span class="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span>  <input  type="text" class="infoInput" value="${registered.patientName}">
-                            </div>
-                            <div class="baseRow1">
-                                <span class="number">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span> <input  type="text" class="infoInput" value="${registered.patientSex}">
-                                <span class="name">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</span> <input  type="text" class="infoInput" value="${registered.patientAge}">
-                            </div>
+<div >
+    <div class="col-xs-12 col-sm-12 col-md-12 rtab">
+        <ul id="martaget-tab" class="nav nav-tabs">
+            <li class="active"><button id="before" class="btn btn-info " style="color: #fff;background-color: #E9984E;border-color: #46b8da;">历史病例</button></li>
+            <li class="active"><button id="Selectprojects"  class="btn btn-info" data-toggle="modal" data-target="#projectsModal" value=""  style="color: #fff;background-color: #E9984E;border-color: #46b8da;">诊疗项目</button></li>
+        </ul>
+        <form id="caseform" class="form-horizontal">
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="executed">
+                    <div class="tab-head">
+                        <span class="listline">患者信息</span>
+                        <div class="tab-body">
+                            <form class="myInput-form">
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label ><font>*</font>身份证号：</label>
+                                        <input  type="text" class="infoInput" data-provide="typeahead" value="${registered.patientIdcard}">
+                                    </div>
+                                </div>
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label class=""><font>*</font>患者姓名：</label>
+                                        <input  type="text" class="infoInput" data-provide="typeahead" value="${registered.patientName}">
+                                    </div>
+                                </div>
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label class=""><font>*</font>患者性别：</label>
+                                        <input  type="text" class="infoInput" data-provide="typeahead"  value="${registered.patientSex}">
+                                    </div>
+                                </div>
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label><font>*</font>年龄：</label>
+                                        <input  type="text" class="infoInput" data-provide="typeahead" value="${registered.patientAge}" >
+                                    </div>
+                                </div>
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label><font>*</font>就诊时间：</label>
+                                        <input  id="date" type="text" class="infoInput" value="${date}">
+                                    </div>
+                                </div>
+                                <div class="b-block">
+                                    <div class="form-group">
+                                        <label><font>*</font>主治医生：</label>
+                                        <input  type="text"class="infoInput" data-provide="typeahead"  value="<%=request.getSession().getAttribute("employee_name")%>">
+                                    </div>
+                                </div>
+                            </form>
 
-                            <div class="baseRow1">
-                                <span class="number">就诊时间</span> <input  id="date" type="text" class="infoInput" value="${date}">
-                                <span class="name">主治医生</span> <input  type="text" class="infoInput"  value="<%=request.getSession().getAttribute("employee_name")%>">
+                        </div><!--tab-body结束-->
+                        <span class="listline">病例书写</span>
+                        <div class="tab-body zqinfo" style="height: 20%">
+                            <div class="form-group">
+                                <label>现病史</label>
+                                <textarea class="form-control" rows="5" id="content" name="content">${registered.projectResult}</textarea>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>现病史</label>
-                            <textarea class="form-control" rows="3" id="content" name="content">${registered.projectResult}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>治疗方案</label>
+                        </div><!--tab-body结束-->
+                        <span class="listline">诊疗方案</span>
+                        <div class="tab-body zqinfo">
+                            <input id="defaultSelect" type="text" readonly="readonly" placeholder="药品选择" class="inpstyle" data-toggle="modal" data-target="#myModal" value="">
                             <textarea class="form-control" rows="5" id="programme" name="programme"></textarea>
                             <input  id="money" type="hidden" class="infoInput" value="0">
                             <input  id="mid" type="hidden" class="infoInput" value="0">
                             <input  id="mnum" type="hidden" class="infoInput" value="0">
-                        </div>
-                    <div class="form-group">
-                    <input id="defaultSelect" type="text" readonly="readonly" placeholder="药品选择" class="inpstyle" data-toggle="modal" data-target="#myModal" value="">
-                    <!-- 药品选择模态框（Modal） -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                        <div class="modal-dialog" >
-                            <div class="modal-content" style="min-width: 900px">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"
-                                            aria-hidden="true">
-                                    </button>
-                                    <h5 class="modal-title" id="myModalLabel">
-                                        药品选择
-                                    </h5>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="config-search">
-                                        <input id="queryName" type="text"  placeholder="输入药品名称"/>
-                                        <button id="query" class="btn-search">查询</button>
 
-                                    </div>
+                            <!-- 药品选择模态框（Modal） -->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog" >
+                                    <div class="modal-content" style="min-width: 900px">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-hidden="true">
+                                            </button>
+                                            <h5 class="modal-title" id="myModalLabel">
+                                                药品选择
+                                            </h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="config-search">
+                                                <input id="queryName" type="text"  placeholder="输入药品名称"/>
+                                                <button id="query" class="btn-search">查询</button>
 
-                                    <div class="search-detail">
-                                        <table id="tableData">
-                                        </table>
+                                            </div>
+
+                                            <div class="search-detail">
+                                                <table id="tableData">
+                                                </table>
 
 
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
-                                    <button id="selectID" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+                                            <button id="selectID" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </div><!--tab-body结束-->
                     </div>
-                        <button id="addcase" type="button" class="btn btn-info ">确定</button>
-                        <button id="chehui" type="button" class="btn btn-info ">撤回</button>
-                        <input  id="programmeId" type="hidden" class="infoInput" value="">
-                        <input  id="caseId" type="hidden" class="infoInput" value="">
+
                 </div>
-                </form>
             </div>
-        </div>
+
+            <button id="addcase" type="button" class="btn btn-info ">确定</button>
+            <button id="chehui" type="button" class="btn btn-info ">撤回</button>
+            <input  id="programmeId" type="hidden" class="infoInput" value="">
+            <input  id="caseId" type="hidden" class="infoInput" value="">
+        </form>
     </div>
+</div>
 
             <!-- 诊疗项目选择模态框（Modal） -->
             <div class="modal fade" id="projectsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

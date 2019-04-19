@@ -348,7 +348,9 @@ $(function() {
         }else if(type=="医生"){
             /*为科室选择赋值，值为该登陆账号的科室名称和科室ID*/
             $("#selectDepartmentId").val($("#departmentsid").val());
-            $("#defaultSelect").val($("#departments").val())
+            $("#defaultSelect").val($("#departments").val());
+            var querym=document.getElementById('defaultSelect');
+            querym.style.display="none";
 
             /*获取查询条件的值进行查询*/
             textarea = $("#selectDepartmentId").val();

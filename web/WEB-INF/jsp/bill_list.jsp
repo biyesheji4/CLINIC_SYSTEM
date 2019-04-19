@@ -406,7 +406,7 @@ function downloadFile() {
     var date1=$("#logmin").val();
     var date2=$("#logmax").val();
     var searchindex=$("#searchindex").val();
-    location.href="bill/toExportFile.do?fileTitle="+fileTitle+"&date1="
+    location.href="${pageContext.request.contextPath}/bill/toExportFile.do?fileTitle="+fileTitle+"&date1="
                    +date1+"&date2="+date2+"&searchindex="+searchindex;
     <%--$.ajax({--%>
             <%--type:"post",--%>
