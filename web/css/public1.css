@@ -246,11 +246,12 @@ float: left;
 	margin-bottom: 10px;
 }
 .b-block{
-	margin-right: 30px;
+	margin-right: 10%;
 	display: inline-block;
 	padding-top: 20px;
 	text-align: right;
 	padding-bottom: 20px;
+
 }
 .b-block label{
 	width:80px;/*使label文字右对齐的重要条件*/

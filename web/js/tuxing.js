@@ -186,7 +186,7 @@ function tuxing(yeartime,startDate,endDate) {
                 if(bi[j].billState == "0"){
                     option1.xAxis[0].data.push(bi[j].billDate);
                     option1.series[0].data.push(bi[j].billMon);
-                }else {
+                }else if(bi[j].billState == "1"){
                     option1.series[1].data.push(bi[j].billMon);
                 }
             }

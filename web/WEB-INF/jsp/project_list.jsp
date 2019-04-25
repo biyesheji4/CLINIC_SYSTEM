@@ -158,48 +158,55 @@ function datadel(){
 	var id_array=new Array();  
 	$('input[name="id"]:checked').each(function(){  
 	    id_array.push($(this).val());//向数组中添加元素  
-	});  
-	var idstr=id_array.join(',');//将数组元素连接起来以构建一个字符串 
-	console.log(idstr);
-    swal({
-        title: "",      //弹出框的title
-        text: "确定删除吗？",   //弹出框里面的提示文本
-        type: "warning",        //弹出框类型
-        showCancelButton: true, //是否显示取消按钮
-        confirmButtonColor: "#DD6B55",//确定按钮颜色
-        cancelButtonText: "取消",//取消按钮文本
-        confirmButtonText: "是的，确定删除！",//确定按钮上面的文档
-        closeOnConfirm: false
-    },function(){
-		$.ajax({
-            type: "post",
-            url: "${pageContext.request.contextPath}/project/delallproject.action",
-            dataType: 'json',
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(idstr),
-			success: function(data){
-				if(data==1){
-					// window.location.reload();
-					// layer.msg('已删除!',{icon:1,time:1000});
-                    swal("",
-                        "已删除！",
-                        "success");
-                    querysomedata(currpage,1);
-				}else{
-					// layer.msg('删除失败!',{icon:1,time:1000});
-                    swal("",
-                        "删除失败！",
-                        "error");
-				}
-				
-			},
-			error:function (XMLHttpRequest, textStatus, errorThrown) {
-               console.log(XMLHttpRequest.status);
-               console.log(XMLHttpRequest.readyState);
-               console.log(textStatus);
-           },
-		});		
 	});
+    if(id_array.length<=0){
+        swal("",
+            "请至少选择一条要删除数据！",
+            "warning");
+    }else {
+        var idstr=id_array.join(',');//将数组元素连接起来以构建一个字符串
+        console.log(idstr);
+        swal({
+            title: "",      //弹出框的title
+            text: "确定删除吗？",   //弹出框里面的提示文本
+            type: "warning",        //弹出框类型
+            showCancelButton: true, //是否显示取消按钮
+            confirmButtonColor: "#DD6B55",//确定按钮颜色
+            cancelButtonText: "取消",//取消按钮文本
+            confirmButtonText: "是的，确定删除！",//确定按钮上面的文档
+            closeOnConfirm: false
+        },function(){
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/project/delallproject.action",
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(idstr),
+                success: function(data){
+                    if(data==1){
+                        // window.location.reload();
+                        // layer.msg('已删除!',{icon:1,time:1000});
+                        swal("",
+                            "已删除！",
+                            "success");
+                        querysomedata(currpage,1);
+                    }else{
+                        // layer.msg('删除失败!',{icon:1,time:1000});
+                        swal("",
+                            "删除失败！",
+                            "error");
+                    }
+
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                },
+            });
+        });
+	}
+
 }
 
 //目标页码

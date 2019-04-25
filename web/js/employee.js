@@ -124,7 +124,7 @@ $(function() {
                         formatter:function(value,row,index){
                             if(row.employeeState == 1){
                                 var a = '<button type="button" class="btn btn-sm btn-default" onclick="update('+row.id+')"><span class="glyphicon glyphicon-pencil" > </span></button>';
-                                var d = '<button type="button" class="btn btn-sm btn-default" onclick="del('+row.id+')"><span class="glyphicon glyphicon-trash" ></button>';
+                                var d = '<button type="button" class="btn btn-sm btn-default" onclick="del('+row.id+')" style="margin-left: 20px"><span class="glyphicon glyphicon-trash" ></button>';
                                 return a+d
                             }
                             else {

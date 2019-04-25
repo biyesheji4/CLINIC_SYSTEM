@@ -16,8 +16,6 @@
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sweet-alert.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrapvalidator.css">
-
-
   </head>
 
   <body>
@@ -35,7 +33,7 @@
       <li>
          <label>选择时间:</label>
         <div class=" input-group form_date date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input" data-link-format="yyyy-mm-dd">
-        <input id="calendar" class="form-control" type="text" value="" readonly>
+        <input id="calendar" class="form-control" type="text" value="${data}" readonly>
           <span class="input-group-addon">
 				<i class="fa fa-calendar"></i>
           </span>

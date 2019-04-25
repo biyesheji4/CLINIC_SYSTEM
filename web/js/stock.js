@@ -153,7 +153,7 @@ $(function() {
                                     }
                                 }
                             });
-                            var d = '<button type="button" class="btn btn-sm btn-default" onclick="del('+row.id+')"><span class="glyphicon glyphicon-trash" ></button>';
+                            var d = '<button type="button" class="btn btn-sm btn-default" onclick="del('+row.id+')" style="margin-left: 20px;width: 46;height: 30"><span class="glyphicon glyphicon-trash" ></button>';
                             return ccc+d;
                         }
                     }
